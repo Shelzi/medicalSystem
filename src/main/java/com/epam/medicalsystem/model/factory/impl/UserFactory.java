@@ -5,6 +5,7 @@ import com.epam.medicalsystem.model.entity.User;
 import com.epam.medicalsystem.model.entity.UserRole;
 import com.epam.medicalsystem.model.factory.EntityFactory;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.locks.Lock;
@@ -33,7 +34,7 @@ public class UserFactory implements EntityFactory<User> {
         String firstName = fields.get(RequestParameter.FIRST_NAME);
         String lastName = fields.get(RequestParameter.LAST_NAME);
         String middleName = fields.get(RequestParameter.MIDDLE_NAME);
-        UserRole userRole = UserRole.valueOf(fields.get(RequestParameter.USER_ROLE));
+        UserRole userRole = UserRole.valueOf(fields.get(RequestParameter.USER_ROLE).toUpperCase(Locale.ROOT));
         return Optional.of(new User(firstName, lastName, middleName, email, userRole));
     }
 }

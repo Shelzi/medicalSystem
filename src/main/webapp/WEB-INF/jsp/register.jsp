@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Asus
-  Date: 05.02.2022
-  Time: 22:33
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -29,9 +23,9 @@
     <input type="password" name="password" value=""/>
     <br/>
     Role:
-    <input type="radio" id="doctor" name="userRole" value=""/>
+    <input type="radio" id="doctor" name="userRole" value="doctor"/>
     <label for="doctor">Doctor</label>
-    <input type="radio" id="nurse" name="userRole" value=""/>
+    <input type="radio" id="nurse" name="userRole" value="nurse"/>
     <label for="nurse">Nurse</label>
     <input type="submit" value="Register"/>
 </form>

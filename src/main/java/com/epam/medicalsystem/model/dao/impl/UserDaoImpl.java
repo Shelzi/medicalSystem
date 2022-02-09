@@ -31,9 +31,15 @@ public class UserDaoImpl implements UserDao {
         String usernameDB = "root";
         String passwordDB = "root";
 
+        String driverName = "com.mysql.cj.jdbc.Driver";
+        try {
+            Class.forName(driverName);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         try (Connection conn = DriverManager.getConnection(url, usernameDB, passwordDB)) {
-            String SQL_INSERT_USER = "INSERT INTO users(first_name, last_name," +
-                    "middle_name, email, password, role) VALUES (?, ?, ?, ?, ?, ?);";
+            String SQL_INSERT_USER = "INSERT INTO users(firstName, lastName," +
+                    "middleName, email, password, userRole) VALUES (?, ?, ?, ?, ?, ?);";
             PreparedStatement preparedStatement = conn.prepareStatement(SQL_INSERT_USER);
             preparedStatement.setString(1, user.getFirstName());
             preparedStatement.setString(2, user.getLastName());
