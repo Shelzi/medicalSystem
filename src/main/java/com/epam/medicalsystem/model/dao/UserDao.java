@@ -6,4 +6,5 @@ import java.util.Optional;
 
 public interface UserDao {
     boolean add(User user, String password);
+    Optional<User> findUserByEmail(String email);
 }

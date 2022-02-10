@@ -2,11 +2,11 @@ package com.epam.medicalsystem.model.dao.impl;
 
 import com.epam.medicalsystem.model.dao.UserDao;
 import com.epam.medicalsystem.model.entity.User;
+import com.epam.medicalsystem.model.entity.UserRole;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.Locale;
+import java.util.Optional;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -55,5 +55,38 @@ public class UserDaoImpl implements UserDao {
             e.printStackTrace();
             return false;
         }
+    }
+
+    @Override
+    public Optional<User> findUserByEmail(String email) {
+        String url = "jdbc:mysql://127.0.0.1:3306/medicalsystem";
+        String usernameDB = "root";
+        String passwordDB = "root";
+        String driverName = "com.mysql.cj.jdbc.Driver";
+        try {
+            Class.forName(driverName);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        try (Connection conn = DriverManager.getConnection(url, usernameDB, passwordDB)) {
+            String SQL_INSERT_USER = "SELECT * FROM users where email = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(SQL_INSERT_USER);
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return (resultSet.next() ? Optional.of(createUserFromResultSet(resultSet)) : Optional.empty());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
+    private User createUserFromResultSet(ResultSet resultSet) throws SQLException {
+        long id = resultSet.getLong(1);
+        String firstName = resultSet.getString(2);
+        String lastName = resultSet.getString(3);
+        String middleName = resultSet.getString(4);
+        String email = resultSet.getString(5);
+        UserRole userRole = UserRole.valueOf(resultSet.getString(6).toUpperCase(Locale.ROOT));
+        return (new User(id, firstName, lastName, middleName, email, userRole));
     }
 }
