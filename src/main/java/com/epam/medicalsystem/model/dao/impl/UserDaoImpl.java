@@ -48,8 +48,6 @@ public class UserDaoImpl implements UserDao {
             preparedStatement.setString(5, password);
             preparedStatement.setString(6, user.getUserRole().toString());
 
-
-
             int rows = preparedStatement.executeUpdate();
             System.out.printf("%d rows added", rows);
             return true;
