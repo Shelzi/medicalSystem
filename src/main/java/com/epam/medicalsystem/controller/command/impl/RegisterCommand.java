@@ -4,10 +4,14 @@ import com.epam.medicalsystem.controller.MessageManager;
 import com.epam.medicalsystem.controller.atribute.PagePath;
 import com.epam.medicalsystem.controller.atribute.RequestParameter;
 import com.epam.medicalsystem.controller.command.ActionCommand;
+import com.epam.medicalsystem.exception.CommandException;
+import com.epam.medicalsystem.exception.ServiceException;
 import com.epam.medicalsystem.model.dao.UserDao;
 import com.epam.medicalsystem.model.dao.impl.UserDaoImpl;
 import com.epam.medicalsystem.model.entity.User;
 import com.epam.medicalsystem.model.factory.impl.UserFactory;
+import com.epam.medicalsystem.model.service.UserService;
+import com.epam.medicalsystem.model.service.impl.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.LinkedHashMap;
@@ -16,7 +20,7 @@ import java.util.Optional;
 
 public class RegisterCommand implements ActionCommand {
     @Override
-    public String execute(HttpServletRequest request) {
+    public String execute(HttpServletRequest request) throws CommandException {
         String firstName = request.getParameter(RequestParameter.FIRST_NAME);
         String lastName = request.getParameter(RequestParameter.LAST_NAME);
         String middleName = request.getParameter(RequestParameter.MIDDLE_NAME);
@@ -32,13 +36,17 @@ public class RegisterCommand implements ActionCommand {
         requestFields.put(RequestParameter.EMAIL, email);
         requestFields.put(RequestParameter.USER_ROLE, userRole);
 
-        Optional<User> userOptional = UserFactory.getInstance().create(requestFields);
+        UserService service = UserServiceImpl.getInstance();
 
-        if (userOptional.isPresent()) {
-            UserDaoImpl.getInstance().add(userOptional.get(), password);
-        } else {
-            request.setAttribute("errorRegister",
-                    MessageManager.getProperty("Fail reg"));
+        try {
+            if (service.register(requestFields)) {
+
+            } else {
+                request.setAttribute("errorRegister",
+                        MessageManager.getProperty("Fail reg"));
+            }
+        } catch (ServiceException e) {
+            throw new CommandException(e);
         }
 
         return PagePath.LOGIN;

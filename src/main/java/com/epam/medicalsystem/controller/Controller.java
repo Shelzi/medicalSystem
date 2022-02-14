@@ -3,6 +3,7 @@ package com.epam.medicalsystem.controller;
 import com.epam.medicalsystem.controller.atribute.JspAttribute;
 import com.epam.medicalsystem.controller.atribute.PagePath;
 import com.epam.medicalsystem.controller.command.ActionCommand;
+import com.epam.medicalsystem.exception.CommandException;
 
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
@@ -30,7 +31,11 @@ public class Controller extends HttpServlet {
         String page = null;
         ActionFactory client = new ActionFactory();
         ActionCommand command = client.defineCommand(request);
-        page = command.execute(request);
+        try {
+            page = command.execute(request);
+        } catch (CommandException e) {
+            throw new ServletException(e);
+        }
         //page = null;
         if (page != null) {
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);

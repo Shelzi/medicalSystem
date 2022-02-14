@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Appenders>
+        <Console name="ConsoleAppender" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+        </Console>
+        <File name="FileAppender" fileName="application-${date:yyyyMMdd}.log" immediateFlush="false" append="true">
+            <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </File>
+    </Appenders>
+    <Loggers>
+        <Root level="debug">
+            <AppenderRef ref="ConsoleAppender" />
+            <AppenderRef ref="FileAppender"/>
+        </Root>
+    </Loggers>
+</Configuration>
+
+<Configuration status="ERROR">
+<Appenders>
+    <Console name="Console" target="System.out">
+        <PatternLayout pattern="%d{HH:mm:ss} %-5level %logger{1}, message: %msg%n"/>
+    </Console>
+    <RollingFile name="File" fileName="logs/log.txt" append="true"
+                 filePattern = "logs/${date:yyyy-MM-dd}/%d{dd-MM-yyyy_HH-mm}_%i.txt">
+        <PatternLayout pattern="%d{dd-MM-yyyy HH:mm:ss} %M %-5level %logger{2}, message: %msg%n"/>
+        <Policies>
+            <TimeBasedTriggeringPolicy/>
+            <SizeBasedTriggeringPolicy size="20KB"/>
+        </Policies>
+        <DefaultRolloverStrategy max="10"/>
+    </RollingFile>
+</Appenders>
+<Loggers>
+    <Root level="INFO">
+        <AppenderRef ref="Console"/>
+        <AppenderRef ref="File"/>
+    </Root>
+</Loggers>
+</Configuration>

@@ -1,8 +1,11 @@
 package com.epam.medicalsystem.model.dao.impl;
 
+import com.epam.medicalsystem.exception.ConnectionPollException;
+import com.epam.medicalsystem.exception.DaoException;
 import com.epam.medicalsystem.model.dao.UserDao;
 import com.epam.medicalsystem.model.entity.User;
 import com.epam.medicalsystem.model.entity.UserRole;
+import com.epam.medicalsystem.model.pool.ConnectionPool;
 
 import java.sql.*;
 import java.util.Locale;
@@ -12,6 +15,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class UserDaoImpl implements UserDao {
     private static final Lock locker = new ReentrantLock();
+    private static final ConnectionPool pool = ConnectionPool.getInstance();
     private static UserDao instance;
 
     public static UserDao getInstance() {
@@ -26,58 +30,39 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean add(User user, String password) {
-        String url = "jdbc:mysql://127.0.0.1:3306/medicalsystem";
-        String usernameDB = "root";
-        String passwordDB = "root";
-
-        String driverName = "com.mysql.cj.jdbc.Driver";
-        try {
-            Class.forName(driverName);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        try (Connection conn = DriverManager.getConnection(url, usernameDB, passwordDB)) {
+    public boolean add(User user, String password) throws DaoException{
+        try (Connection connection = ConnectionPool.getInstance().takeConnection()) {
             String SQL_INSERT_USER = "INSERT INTO users(firstName, lastName," +
-                    "middleName, email, password, userRole) VALUES (?, ?, ?, ?, ?, ?);";
-            PreparedStatement preparedStatement = conn.prepareStatement(SQL_INSERT_USER);
+                    "middleName, email, password, userRoleId) VALUES (?, ?, ?, ?, ?, ?);";
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_USER);
             preparedStatement.setString(1, user.getFirstName());
             preparedStatement.setString(2, user.getLastName());
             preparedStatement.setString(3, user.getMiddleName());
             preparedStatement.setString(4, user.getEmail());
             preparedStatement.setString(5, password);
-            preparedStatement.setString(6, user.getUserRole().toString());
+            preparedStatement.setInt(6, user.getUserRole().getRoleId());
 
             int rows = preparedStatement.executeUpdate();
             System.out.printf("%d rows added", rows);
             return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+        } catch (SQLException | ConnectionPollException e) {
+            throw new DaoException(e);
         }
     }
 
     @Override
-    public Optional<User> findUserByEmail(String email) {
-        String url = "jdbc:mysql://127.0.0.1:3306/medicalsystem";
-        String usernameDB = "root";
-        String passwordDB = "root";
-        String driverName = "com.mysql.cj.jdbc.Driver";
-        try {
-            Class.forName(driverName);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        try (Connection conn = DriverManager.getConnection(url, usernameDB, passwordDB)) {
+    public Optional<User> findUserByEmail(String email) throws DaoException{
+        Optional<User> userOptional;
+        try (Connection connection = pool.takeConnection()) {
             String SQL_INSERT_USER = "SELECT * FROM users where email = ?";
-            PreparedStatement preparedStatement = conn.prepareStatement(SQL_INSERT_USER);
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_USER);
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
-            return (resultSet.next() ? Optional.of(createUserFromResultSet(resultSet)) : Optional.empty());
-        } catch (SQLException e) {
-            e.printStackTrace();
+            userOptional = (resultSet.next() ? Optional.of(createUserFromResultSet(resultSet)) : Optional.empty());
+        } catch (SQLException | ConnectionPollException e) {
+            throw new DaoException(e);
         }
-        return Optional.empty();
+        return userOptional;
     }
 
     private User createUserFromResultSet(ResultSet resultSet) throws SQLException {
@@ -88,5 +73,18 @@ public class UserDaoImpl implements UserDao {
         String email = resultSet.getString(5);
         UserRole userRole = UserRole.valueOf(resultSet.getString(6).toUpperCase(Locale.ROOT));
         return (new User(id, firstName, lastName, middleName, email, userRole));
+    }
+
+    @Override
+    public boolean isEmailAvailable(String email) throws DaoException{
+        try (Connection connection = pool.takeConnection()){
+            String SQL_FIND_EMAIL = "SELECT * FROM users where email = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_EMAIL);
+            preparedStatement.setString(1, email);
+            ResultSet set = preparedStatement.executeQuery();
+            return !set.next();
+        } catch (SQLException | ConnectionPollException e) {
+            throw new DaoException(e);
+        }
     }
 }
