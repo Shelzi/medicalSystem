@@ -34,6 +34,7 @@ public class RegisterCommand implements ActionCommand {
         requestFields.put(RequestParameter.LAST_NAME, lastName);
         requestFields.put(RequestParameter.MIDDLE_NAME, middleName);
         requestFields.put(RequestParameter.EMAIL, email);
+        requestFields.put(RequestParameter.PASSWORD, password);
         requestFields.put(RequestParameter.USER_ROLE, userRole);
 
         UserService service = UserServiceImpl.getInstance();

@@ -16,6 +16,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class UserDaoImpl implements UserDao {
     private static final Lock locker = new ReentrantLock();
     private static final ConnectionPool pool = ConnectionPool.getInstance();
+    private static final UserRole DEFAULT_USER_ROLE = UserRole.NURSE;
     private static UserDao instance;
 
     public static UserDao getInstance() {
@@ -71,8 +72,8 @@ public class UserDaoImpl implements UserDao {
         String lastName = resultSet.getString(3);
         String middleName = resultSet.getString(4);
         String email = resultSet.getString(5);
-        UserRole userRole = UserRole.valueOf(resultSet.getString(6).toUpperCase(Locale.ROOT));
-        return (new User(id, firstName, lastName, middleName, email, userRole));
+        Optional<UserRole> userRole = UserRole.valueOfRoleId(resultSet.getInt(7));
+        return (new User(id, firstName, lastName, middleName, email, userRole.orElse(DEFAULT_USER_ROLE)));
     }
 
     @Override
@@ -83,6 +84,19 @@ public class UserDaoImpl implements UserDao {
             preparedStatement.setString(1, email);
             ResultSet set = preparedStatement.executeQuery();
             return !set.next();
+        } catch (SQLException | ConnectionPollException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public Optional<String> findPasswordByEmail(String email) throws DaoException{
+        try (Connection connection = pool.takeConnection()){
+            String SQL_FIND_PASSWORD_BY_EMAIL = "SELECT users.password FROM users where email = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_PASSWORD_BY_EMAIL);
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return (resultSet.next() ? Optional.of(resultSet.getString(1)) : Optional.empty());
         } catch (SQLException | ConnectionPollException e) {
             throw new DaoException(e);
         }

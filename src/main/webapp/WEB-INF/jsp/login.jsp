@@ -21,7 +21,7 @@
     ${nullPage}
     <br/>
     ${errorRegister}
-    <input type="submit" value="Log in"/>
+    <input type="submit" value="Login"/>
 </form>
 <a class="btn btn-primary" href="${pageContext.request.contextPath}/register" role="button">Sing in</a>
 <hr/>

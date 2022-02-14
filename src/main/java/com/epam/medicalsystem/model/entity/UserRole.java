@@ -1,5 +1,7 @@
 package com.epam.medicalsystem.model.entity;
 
+import java.util.Optional;
+
 public enum UserRole {
     NURSE(1),
     DOCTOR(2),
@@ -15,5 +17,14 @@ public enum UserRole {
 
     public int getRoleId() {
         return roleId;
+    }
+
+    public static Optional<UserRole> valueOfRoleId(int roleId) {
+        for (UserRole e : values()) {
+            if (e.roleId == roleId) {
+                return Optional.of(e);
+            }
+        }
+        return Optional.empty();
     }
 }

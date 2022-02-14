@@ -24,7 +24,6 @@ public class UserServiceImpl implements UserService {
     private static volatile UserServiceImpl instance = UserServiceImpl.getInstance();
 
 
-
     public static UserServiceImpl getInstance() {
         if (instance == null) {
             locker.lock();
@@ -54,5 +53,19 @@ public class UserServiceImpl implements UserService {
             throw new ServiceException(e);
         }
         return false;
+    }
+
+    @Override
+    public Optional<User> login(String email, String password) throws ServiceException {
+        try {
+            Optional<String> resultPasswordOptional = dao.findPasswordByEmail(email);
+            if (resultPasswordOptional.isPresent() && Encryptor.check(password, resultPasswordOptional.get())) {
+                return dao.findUserByEmail(email);
+            } else {
+                return Optional.empty();
+            }
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
     }
 }
