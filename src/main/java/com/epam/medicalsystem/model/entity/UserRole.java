@@ -5,9 +5,10 @@ import java.util.Optional;
 public enum UserRole {
     NURSE(1),
     DOCTOR(2),
-    ADMIN(3),
+    LABMEM(3),
     REGISTRAR(4),
-    LABMEM(5);
+    ADMIN(5),
+    GUEST(6);
 
     private final int roleId;
 
