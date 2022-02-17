@@ -11,6 +11,7 @@ import com.epam.medicalsystem.model.factory.EntityFactory;
 import com.epam.medicalsystem.model.factory.impl.UserFactory;
 import com.epam.medicalsystem.model.service.UserService;
 import com.epam.medicalsystem.util.Encryptor;
+import com.epam.medicalsystem.util.MessageManager;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -46,7 +47,7 @@ public class UserServiceImpl implements UserService {
                     String encryptedPassword = Encryptor.encrypt(password);
                     return dao.add(user, encryptedPassword);
                 } else {
-                    fields.put(RequestParameter.EMAIL, JspAttribute.EMAIL_NOT_AVAILABLE_ERROR_MESSAGE);
+                    fields.put(RequestParameter.EMAIL, MessageManager.getProperty("message.emailIsTakenError"));
                 }
             }
         } catch (DaoException e) {

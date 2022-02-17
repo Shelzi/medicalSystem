@@ -1,14 +1,13 @@
-package com.epam.medicalsystem.controller;
+package com.epam.medicalsystem.util;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class MessageManager {
     private final static ResourceBundle resourceBundle =
-            ResourceBundle.getBundle("property.messages",
+            ResourceBundle.getBundle("locale.messages",
                     Locale.US);
 
-    // класс извлекает информацию из файла messages_en_US.properties
     private MessageManager() {
     }
 

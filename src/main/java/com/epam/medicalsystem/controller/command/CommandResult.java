@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class CommandResult {
-    public static final String DEFAULT_PATH = PagePath.LOGIN;
+    public static final String DEFAULT_PATH = PagePath.MAIN;
 
     private String path;
     private Type type;
@@ -64,14 +64,14 @@ public class CommandResult {
                 response.sendRedirect(request.getContextPath() + this.providePath());
                 break;
             }
-           /* case RETURN_WITH_REDIRECT: {
+            case RETURN_WITH_REDIRECT: {
                 String previousUrl = request.getHeader("referer");
                 if (previousUrl == null || previousUrl.isEmpty()) {
                     previousUrl = request.getContextPath() + CommandResult.DEFAULT_PATH;
                 }
                 response.sendRedirect(previousUrl);
                 break;
-            }*/
+            }
             default: {
                 response.sendRedirect(request.getContextPath() + CommandResult.DEFAULT_PATH);
             }

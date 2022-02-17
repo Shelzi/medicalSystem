@@ -1,8 +1,9 @@
 package com.epam.medicalsystem.model.pool;
 
-import com.epam.medicalsystem.exception.ConnectionPollException;
+import com.epam.medicalsystem.exception.ConnectionPoolException;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -46,14 +47,36 @@ public class ConnectionPool {
         // TODO: 14.02.2022 need a refactor to instanceof and add log
     }
 
-    public Connection takeConnection() throws ConnectionPollException {
+    public Connection takeConnection() throws ConnectionPoolException {
         ProxyConnection connection;
         try {
             connection = idleConnections.take();
         } catch (InterruptedException e) {
-            throw new ConnectionPollException(e);
+            throw new ConnectionPoolException(e);
             // TODO: 14.02.2022 add log
         }
         return connection;
     }
+
+    public void init() {
+    }
+// TODO: 17.02.2022 close connections 
+    /*public void destroy() {
+        Set<>
+        DriverManager.getDrivers().forEachRemaining(driver -> {
+            try {
+                DriverManager.deregisterDriver(driver);
+            } catch (SQLException e) {
+                // log
+            }
+        });
+
+        for (ProxyConnection proxyConnection: idleConnections) {
+            try {
+                proxyConnection.finallyClose();
+            } catch (SQLException e) {
+
+            }
+        }
+    }*/
 }

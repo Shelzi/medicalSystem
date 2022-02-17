@@ -9,8 +9,6 @@ public class SessionAttribute {
 
     public static final String USER = "user";
 
-    public static final String VACANCIES = "vacancies";
-
     public static final String SUCCESS_MESSAGE = "successMessage";
 
     private SessionAttribute() {

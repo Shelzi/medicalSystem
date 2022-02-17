@@ -9,14 +9,16 @@ public class User {
     private String middleName;
     private String email;
     private UserRole userRole;
+    private boolean isBanned;
 
-    public User(long id, String firstName, String lastName, String middleName, String email, UserRole userRole) {
+    public User(long id, String firstName, String lastName, String middleName, String email, UserRole userRole, boolean isBanned) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
         this.email = email;
         this.userRole = userRole;
+        this.isBanned = isBanned;
     }
 
     public User(String firstName, String lastName, String middleName, String email, UserRole userRole) {
@@ -75,22 +77,12 @@ public class User {
         this.userRole = userRole;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return id == user.id
-                && Objects.equals(firstName, user.firstName)
-                && Objects.equals(lastName, user.lastName)
-                && Objects.equals(middleName, user.middleName)
-                && Objects.equals(email, user.email)
-                && userRole == user.userRole;
+    public boolean isBanned() {
+        return isBanned;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, firstName, lastName, middleName, email, userRole);
+    public void setBanned(boolean banned) {
+        isBanned = banned;
     }
 
     @Override
@@ -102,6 +94,20 @@ public class User {
                 ", middleName='" + middleName + '\'' +
                 ", email='" + email + '\'' +
                 ", userRole=" + userRole +
+                ", isBanned=" + isBanned +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id && isBanned == user.isBanned && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(middleName, user.middleName) && Objects.equals(email, user.email) && userRole == user.userRole;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, middleName, email, userRole, isBanned);
     }
 }
