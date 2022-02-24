@@ -33,7 +33,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean add(User user, String password) throws DaoException {
-        try (Connection connection = ConnectionPool.getInstance().takeConnection()) {
+        try (Connection connection = pool.takeConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_USER);
             preparedStatement.setString(1, user.getFirstName());
             preparedStatement.setString(2, user.getLastName());

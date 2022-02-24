@@ -1,8 +1,6 @@
 package com.epam.medicalsystem.controller.command;
 
-import com.epam.medicalsystem.controller.command.impl.LoginCommand;
-import com.epam.medicalsystem.controller.command.impl.LogoutCommand;
-import com.epam.medicalsystem.controller.command.impl.RegisterCommand;
+import com.epam.medicalsystem.controller.command.impl.*;
 
 public enum CommandType {
     LOGIN {
@@ -18,6 +16,21 @@ public enum CommandType {
     REGISTER {
         {
             this.command = new RegisterCommand();
+        }
+    },
+    FIND_ALL_PATIENT_CARDS {
+        {
+            this.command = new FindAllPatientCardsCommand();
+        }
+    },
+    TO_ADD_PATIENT{
+        {
+            this.command = new ToAddPatientCommand();
+        }
+    },
+    CREATE_PATIENT_CARD{
+        {
+            this.command = new CreatePatientCardCommand();
         }
     };
     ActionCommand command;

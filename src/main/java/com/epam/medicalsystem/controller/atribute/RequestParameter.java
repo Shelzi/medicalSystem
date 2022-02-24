@@ -15,5 +15,18 @@ public class RequestParameter {
 
     public static final String USER_ROLE = "userRole";
 
+    public static final String GENDER = "gender";
+
+    public static final String BIRTHDAY = "birthday";
+
+    public static final String HOME_TOWN = "homeTown";
+
+    public static final String HOME_ADDRESS = "homeAddress";
+
+    public static final String HOME_NUMBER = "homeNumber";
+
+    public static final String APARTMENT_NUMBER = "apartmentNumber";
+
+    public static final String PHONE_NUMBER = "phoneNumber";
 
 }

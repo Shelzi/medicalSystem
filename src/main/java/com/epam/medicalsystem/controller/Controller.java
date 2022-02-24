@@ -40,6 +40,7 @@ public class Controller extends HttpServlet {
                                 HttpServletResponse response)
             throws ServletException, IOException {
         Optional<ActionCommand> command = CommandProvider.defineCommand(request);
+        String date = request.getParameter("startDate");
         try {
             CommandResult commandResult = command.isPresent() ? command.get().execute(request, response) : new CommandResult(CommandResult.DEFAULT_PATH);
             commandResult.redirect(request, response);

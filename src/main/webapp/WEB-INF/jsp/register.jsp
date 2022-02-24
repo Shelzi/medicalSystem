@@ -12,31 +12,35 @@
 <body>
 <form name="registrationForm" method="POST" action="register.do">
     First Name:
-    <input type="text" name="firstName" value="${firstName}"/>
+    <input type="text" name="firstName" value="${firstName}" required/>
     <br/>
     Last Name:
-    <input type="text" name="lastName" value="${lastName}"/>
+    <input type="text" name="lastName" value="${lastName}" required/>
     <br/>
     Middle Name:
-    <input type="text" name="middleName" value="${middleName}"/>
+    <input type="text" name="middleName" value="${middleName}" required/>
     <br/>
     Email:
-    <input type="text" name="email" value="${email}"/>
+    <input type="text" name="email" value="${email}" required/>
     <br/>
     Password:
-    <input type="password" name="password" value="${password}"/>
+    <input type="password" name="password" value="${password}" required/>
     <br/>
     Repeat password:
-    <input type="password" name="repeatedPassword" value="${repeatedPassword}"/>
+    <input type="password" name="repeatedPassword" value="${repeatedPassword}" required/>
     <br/>
     Role:
-    <input type="radio" id="doctor" name="userRole" value="doctor"/>
+    <input type="radio" id="doctor" name="userRole" value="doctor" required/>
     <label for="doctor">Doctor</label>
     <input type="radio" id="nurse" name="userRole" value="nurse"/>
     <label for="nurse">Nurse</label>
+    <input type="radio" id="labmem" name="userRole" value="labmem"/>
+    <label for="nurse">LabMem</label>
+    <input type="radio" id="registrar" name="userRole" value="registrar"/>
+    <label for="nurse">Registrar</label>
     <br>
-    ${errorInputData}
     <input type="submit" value="Register"/>
+    ${errorInputData}
 </form>
 <form method="post" action="index.jsp">
     <input type="submit" value="Back to login">

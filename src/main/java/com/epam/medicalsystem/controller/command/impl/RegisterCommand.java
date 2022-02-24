@@ -53,7 +53,6 @@ public class RegisterCommand implements ActionCommand {
                 request.setAttribute(RequestParameter.EMAIL, requestFields.get(RequestParameter.EMAIL));
                 request.setAttribute(RequestParameter.PASSWORD, requestFields.get(RequestParameter.PASSWORD));
                 request.setAttribute(RequestParameter.REPEATED_PASSWORD, requestFields.get(RequestParameter.REPEATED_PASSWORD));
-                request.setAttribute(RequestParameter.FIRST_NAME, requestFields.get(RequestParameter.FIRST_NAME));
                 request.setAttribute(JspAttribute.ERROR_INPUT_DATA_ATTRIBUTE,
                         MessageManager.getProperty("message.registrationError"));
                 return new CommandResult(PagePath.REGISTER, CommandResult.Type.FORWARD);

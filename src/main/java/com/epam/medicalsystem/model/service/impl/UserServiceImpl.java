@@ -1,6 +1,5 @@
 package com.epam.medicalsystem.model.service.impl;
 
-import com.epam.medicalsystem.controller.atribute.JspAttribute;
 import com.epam.medicalsystem.controller.atribute.RequestParameter;
 import com.epam.medicalsystem.exception.DaoException;
 import com.epam.medicalsystem.exception.ServiceException;
