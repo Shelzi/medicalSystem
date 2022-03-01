@@ -54,12 +54,13 @@ public class PatientCardServiceImpl implements PatientCardService {
     }
 
     @Override
-    public List<PatientCard> getAllCards() throws ServiceException {
-/*        try {
+    public List<PatientCard> findAllCards() throws ServiceException {
+        try {
 
+            PatientCard patientCard = new PatientCard();
         } catch (DaoException e) {
             throw new ServiceException(e);
-        }*/
+        }
         return null;
     }
 

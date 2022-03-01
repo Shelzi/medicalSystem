@@ -3,14 +3,13 @@ package com.epam.medicalsystem.model.dao.impl;
 import com.epam.medicalsystem.exception.ConnectionPoolException;
 import com.epam.medicalsystem.exception.DaoException;
 import com.epam.medicalsystem.model.dao.PatientCardDao;
-import com.epam.medicalsystem.model.dao.UserDao;
-import com.epam.medicalsystem.model.entity.PatientCard;
+import com.epam.medicalsystem.model.entity.*;
 import com.epam.medicalsystem.model.pool.ConnectionPool;
 
 import java.sql.*;
+import java.sql.Date;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -20,6 +19,7 @@ public class PatientCardDaoImpl implements PatientCardDao {
     private static final Lock locker = new ReentrantLock();
     private static final ConnectionPool pool = ConnectionPool.getInstance();
     private static PatientCardDao instance;
+    private static final Gender DEFAULT_GENDER = Gender.OTHER;
 
     public static PatientCardDao getInstance() {
         if (instance == null) {
@@ -30,11 +30,6 @@ public class PatientCardDaoImpl implements PatientCardDao {
             locker.unlock();
         }
         return instance;
-    }
-
-    @Override
-    public List<PatientCard> findAllCards() throws DaoException {
-        return null;
     }
 
     @Override
@@ -82,7 +77,7 @@ public class PatientCardDaoImpl implements PatientCardDao {
     @Override
     public boolean isPatientCardExists(PatientCard patientCard) throws DaoException {
         try (Connection connection = pool.takeConnection();
-             PreparedStatement statement = connection.prepareStatement(SqlQuery.SQL_CHECK_VACANCY_FOR_EXISTENCE)) {
+             PreparedStatement statement = connection.prepareStatement(SqlQuery.SQL_CHECK_CARD_FOR_EXISTENCE)) {
             statement.setString(1, patientCard.getPatient().getFirstName());
             statement.setString(2, patientCard.getPatient().getLastName());
             statement.setString(3, patientCard.getPatient().getMiddleName());
@@ -92,5 +87,35 @@ public class PatientCardDaoImpl implements PatientCardDao {
         } catch (SQLException | ConnectionPoolException e) {
             throw new DaoException(e);
         }
+    }
+
+    @Override
+    public List<PatientCard> findAllCards() throws DaoException {
+        List<PatientCard> patientCards = new ArrayList<>();
+        try(Connection connection = pool.takeConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(SqlQuery.SQL_FIND_ALL_CARDS)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Patient patient.add(createPatientFromResultSet(resultSet));
+            }   // TODO: 28.02.2022 переписать
+            return patientCards;
+        } catch (SQLException | ConnectionPoolException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    private PatientCard createPatientFromResultSet(ResultSet resultSet) throws SQLException {
+        String firstName = resultSet.getString("firstName");
+        String lastName = resultSet.getString("lastName");
+        String middleName = resultSet.getString("middleName");
+        Optional<Gender> gender = Gender.valueOfGenderId(resultSet.getInt("gender"));
+        LocalDate birthday = resultSet.getDate("birthday").toLocalDate();
+        String homeTown = resultSet.getString("city");
+        String homeAddress = resultSet.getString("homeAddress");
+        String homeNumber = resultSet.getString("homeNumber");
+        String apartmentNumber = resultSet.getString("apartmentNumber");
+        String phoneNumber = resultSet.getString("phoneNumber");
+        return (new PatientCard(new Patient(firstName, lastName, middleName, gender.orElse(DEFAULT_GENDER),
+                birthday, homeTown, homeAddress, homeNumber, apartmentNumber, phoneNumber), new HashSet<Visit>()));
     }
 }

@@ -3,6 +3,7 @@ package com.epam.medicalsystem.model.dao.impl;
 import com.epam.medicalsystem.exception.ConnectionPoolException;
 import com.epam.medicalsystem.exception.DaoException;
 import com.epam.medicalsystem.model.dao.UserDao;
+import com.epam.medicalsystem.model.entity.PatientCard;
 import com.epam.medicalsystem.model.entity.User;
 import com.epam.medicalsystem.model.entity.UserRole;
 import com.epam.medicalsystem.model.pool.ConnectionPool;
@@ -33,8 +34,8 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean add(User user, String password) throws DaoException {
-        try (Connection connection = pool.takeConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_USER);
+        try (Connection connection = pool.takeConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_USER)) {
             preparedStatement.setString(1, user.getFirstName());
             preparedStatement.setString(2, user.getLastName());
             preparedStatement.setString(3, user.getMiddleName());
@@ -50,8 +51,8 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> findUserByEmail(String email) throws DaoException {
         Optional<User> userOptional;
-        try (Connection connection = pool.takeConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_USER_BY_EMAIL);
+        try (Connection connection = pool.takeConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_USER_BY_EMAIL)) {
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
             userOptional = (resultSet.next() ? Optional.of(createUserFromResultSet(resultSet)) : Optional.empty());
@@ -63,8 +64,8 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean isEmailAvailable(String email) throws DaoException {
-        try (Connection connection = pool.takeConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_EMAIL);
+        try (Connection connection = pool.takeConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_EMAIL)) {
             preparedStatement.setString(1, email);
             ResultSet set = preparedStatement.executeQuery();
             return !set.next();
@@ -75,8 +76,8 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<String> findPasswordByEmail(String email) throws DaoException {
-        try (Connection connection = pool.takeConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_PASSWORD_BY_EMAIL);
+        try (Connection connection = pool.takeConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_PASSWORD_BY_EMAIL)) {
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
             return (resultSet.next() ? Optional.of(resultSet.getString(1)) : Optional.empty());

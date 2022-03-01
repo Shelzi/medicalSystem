@@ -3,8 +3,10 @@ package com.epam.medicalsystem.model.pool;
 import com.epam.medicalsystem.exception.ConnectionPoolException;
 
 import java.sql.Connection;
+import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -60,23 +62,23 @@ public class ConnectionPool {
 
     public void init() {
     }
-// TODO: 17.02.2022 close connections 
-    /*public void destroy() {
-        Set<>
-        DriverManager.getDrivers().forEachRemaining(driver -> {
-            try {
-                DriverManager.deregisterDriver(driver);
-            } catch (SQLException e) {
-                // log
-            }
-        });
 
+    public void destroy() throws ConnectionPoolException, SQLException {
         for (ProxyConnection proxyConnection: idleConnections) {
             try {
                 proxyConnection.finallyClose();
             } catch (SQLException e) {
-
+                throw new ConnectionPoolException(e);
             }
         }
-    }*/
+
+        try {
+            while (DriverManager.getDrivers().hasMoreElements()) {
+                Driver driver = DriverManager.getDrivers().nextElement();
+                DriverManager.deregisterDriver(driver);
+            }
+        } catch (SQLException e) {
+            throw new ConnectionPoolException(e);
+        }
+    }
 }

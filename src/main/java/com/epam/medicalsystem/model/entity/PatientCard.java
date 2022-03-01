@@ -5,12 +5,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class PatientCard {
-    private long cardId;
     private Patient patient;
     private Set<Visit> visitsSet;
 
-    public PatientCard(long cardId, Patient patient, Set<Visit> visitsSet) {
-        this.cardId = cardId;
+    public PatientCard(Patient patient, Set<Visit> visitsSet) {
         this.patient = patient;
         this.visitsSet = visitsSet;
     }
@@ -18,14 +16,6 @@ public class PatientCard {
     public PatientCard(Patient patient) {
         this.patient = patient;
         this.visitsSet = new HashSet<>();
-    }
-
-    public long getCardId() {
-        return cardId;
-    }
-
-    public void setCardId(long cardId) {
-        this.cardId = cardId;
     }
 
     public Patient getPatient() {

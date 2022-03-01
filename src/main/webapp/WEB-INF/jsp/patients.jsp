@@ -21,12 +21,12 @@
     </tr>
     </thead>
     <tbody>
-    <c:forEach var="${patientCard}" items="${patientCards}" varStatus="loop">
+    <c:forEach var="${patient}" items="${patientCards}" varStatus="loop">
         <tr>
             <th scope="row">${loop.index}</th>
-            <th>${patientCard.getFirstName()} ${patientCard.getLastName()} ${patientCard.getMiddleName()}</th>
-            <th>${patientCard.getGender()}</th>
-            <th>${patientCard.getNumber()}</th>
+            <th>${patient.getPatient().getFirstName()} ${patient.getPatient().getLastName()} ${patient.getPatient.getMiddleName()}</th>
+            <th>${patient.getPatient().getGender()}</th>
+            <th>${patient.getPatient().getNumber()}</th>
         </tr>
     </c:forEach>
     </tbody>

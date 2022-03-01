@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%--@ taglib prefix="ctg" uri="customtags" --%>
+<%@ taglib prefix="ctg" uri="customtags" %>
 <fmt:setLocale value="${sessionScope.currentLocale}"/>
 <fmt:setBundle basename="locale.messages"/>
 
@@ -10,6 +10,14 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <c:set var="role" scope="session" value="${sessionScope.currentRole}"/>
+    <c:set var="nurse" scope="session" value="NURSE"/>
+    <c:set var="doctor" scope="session" value="DOCTOR"/>
+    <c:set var="labmem" scope="session" value="LABMEM"/>
+    <c:set var="registrar" scope="session" value="REGISTRAR"/>
+    <c:set var="admin" scope="session" value="ADMIN"/>
+    <c:set var="guest" scope="session" value="GUEST"/>
+    <c:set var="user" scope="session" value="${sessionScope.user}"/>
     <div class="container-fluid">
         <a class="navbar-brand" href="${pageContext.request.contextPath}/main">Medical System</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -19,11 +27,18 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="${pageContext.request.contextPath}/find_all_patient_cards.do">Cards</a>
+                    <a class="nav-link active" aria-current="page"
+                       href="${pageContext.request.contextPath}/find_all_patient_cards.do">Cards</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="${pageContext.request.contextPath}/to_add_patient.do">Add card</a>
-                </li>
+                <ctg:user-name>
+                    <c:if test="${sessionScope.role.toString().equals(registrar)}">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page"
+                           href="${pageContext.request.contextPath}/to_add_patient.do">Add card</a>
+                    </li>
+                    </c:if>
+                </ctg:user-name>
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">

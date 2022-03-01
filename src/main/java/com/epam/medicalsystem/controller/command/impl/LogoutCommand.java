@@ -15,8 +15,12 @@ public class LogoutCommand implements ActionCommand {
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
+/*
         session.removeAttribute(SessionAttribute.USER_ID);
         session.removeAttribute(SessionAttribute.USER);
+*/
+        session.invalidate();
+        // TODO: 28.02.2022 read about invalidation
         return (new CommandResult("/login", CommandResult.Type.REDIRECT));
     }
 }

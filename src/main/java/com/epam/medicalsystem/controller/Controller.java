@@ -4,12 +4,14 @@ import com.epam.medicalsystem.controller.command.ActionCommand;
 import com.epam.medicalsystem.controller.command.CommandProvider;
 import com.epam.medicalsystem.controller.command.CommandResult;
 import com.epam.medicalsystem.exception.CommandException;
+import com.epam.medicalsystem.exception.ConnectionPoolException;
 import com.epam.medicalsystem.model.pool.ConnectionPool;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Optional;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,6 +28,14 @@ public class Controller extends HttpServlet {
         ConnectionPool.getInstance().init();
     }
 
+    public void destroy() {
+        try {
+            ConnectionPool.getInstance().destroy();
+        } catch (ConnectionPoolException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
@@ -34,7 +44,7 @@ public class Controller extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-    }
+   }
 
     private void processRequest(HttpServletRequest request,
                                 HttpServletResponse response)
