@@ -5,7 +5,7 @@ public class JspAttribute {
 
     public static final String ERROR_PATIENT_CARD_IS_EXIST = "errorCardIsExist";
 
-    public static final String SUCCESS_PATIENT_CARD_REGISTRATION = "successPatientCardRegistration";
+    public static final String SUCCESS_PATIENT_CARD_REGISTRATION = "successPatientRegistration";
 
     private JspAttribute() {
     }

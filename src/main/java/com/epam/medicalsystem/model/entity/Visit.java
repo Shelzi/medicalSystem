@@ -3,7 +3,7 @@ package com.epam.medicalsystem.model.entity;
 import java.time.LocalDateTime;
 
 public class Visit {
-    private long visitId;
+    private long id;
     private LocalDateTime visitDate;
     private Patient patient;
     private User doctor;
@@ -13,21 +13,20 @@ public class Visit {
     private String medicines;
     private LocalDateTime nextVisitDate;
 
-    public Visit(long visitId, LocalDateTime visitDate, Patient patient, User doctor, String anamnesis,
+    public Visit(long id, LocalDateTime visitDate, Patient patient, User doctor, String anamnesis,
                  String complaints, String diagnosis, String medicines, LocalDateTime nextVisitDate) {
-        this.visitId = visitId;
-        this.visitDate = visitDate;
-        this.patient = patient;
-        this.doctor = doctor;
-        this.anamnesis = anamnesis;
-        this.complaints = complaints;
-        this.diagnosis = diagnosis;
-        this.medicines = medicines;
-        this.nextVisitDate = nextVisitDate;
+        this(visitDate, patient, doctor, anamnesis, complaints, diagnosis, medicines, nextVisitDate);
+        this.id = id;
     }
 
     public Visit(LocalDateTime visitDate, Patient patient, User doctor, String anamnesis, String complaints,
                  String diagnosis, String medicines, LocalDateTime nextVisitDate) {
+        this(visitDate, patient, doctor, anamnesis, complaints, diagnosis, medicines);
+        this.nextVisitDate = nextVisitDate;
+    }
+
+    public Visit(LocalDateTime visitDate, Patient patient, User doctor, String anamnesis, String complaints,
+                 String diagnosis, String medicines) {
         this.visitDate = visitDate;
         this.patient = patient;
         this.doctor = doctor;
@@ -35,15 +34,14 @@ public class Visit {
         this.complaints = complaints;
         this.diagnosis = diagnosis;
         this.medicines = medicines;
-        this.nextVisitDate = nextVisitDate;
     }
 
-    public long getVisitId() {
-        return visitId;
+    public long getId() {
+        return id;
     }
 
-    public void setVisitId(long visitId) {
-        this.visitId = visitId;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public LocalDateTime getVisitDate() {

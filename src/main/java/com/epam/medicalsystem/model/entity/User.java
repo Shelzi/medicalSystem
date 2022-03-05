@@ -11,6 +11,10 @@ public class User {
     private UserRole userRole;
     private boolean isBanned;
 
+    public User(long id) {
+        this.id = id;
+    }
+
     public User(long id, String firstName, String lastName, String middleName, String email, UserRole userRole, boolean isBanned) {
         this.id = id;
         this.firstName = firstName;

@@ -3,13 +3,17 @@ package com.epam.medicalsystem.model.entity;
 import java.time.LocalDate;
 
 public class Patient {
-    private long patientId;
+    private long id;
     private String firstName;
     private String lastName;
     private String middleName;
     private Gender gender;
     private LocalDate birthday;
     private Address address;
+
+    public Patient(long id) {
+        this.id = id;
+    }
 
     public Patient(String firstName, String lastName, String middleName, Gender gender,
                    LocalDate birthday, Address address) {
@@ -32,12 +36,12 @@ public class Patient {
         this.address = new Address(homeTown, homeAddress, homeNumber, apartmentNumber, phoneNumber);
     }
 
-    public long getPatientId() {
-        return patientId;
+    public long getId() {
+        return id;
     }
 
-    public void setPatientId(long patientId) {
-        this.patientId = patientId;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -143,5 +147,30 @@ public class Patient {
         public void setPhoneNumber(String phoneNumber) {
             this.phoneNumber = phoneNumber;
         }
+
+        @Override
+        public String toString() {
+            return "Address{" +
+                    "homeTown='" + homeTown + '\'' +
+                    ", homeAddress='" + homeAddress + '\'' +
+                    ", homeNumber='" + homeNumber + '\'' +
+                    ", apartmentNumber='" + apartmentNumber + '\'' +
+                    ", phoneNumber='" + phoneNumber + '\'' +
+                    '}';
+        }
+    }
+
+    @Override
+    public String
+    toString() {
+        return "Patient{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", gender=" + gender +
+                ", birthday=" + birthday +
+                ", address=" + address +
+                '}';
     }
 }

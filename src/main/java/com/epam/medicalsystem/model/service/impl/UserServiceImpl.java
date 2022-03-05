@@ -19,10 +19,9 @@ import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
     private static final EntityFactory<User> userFactory = UserFactory.getInstance();
-    private static final UserDao dao = UserDaoImpl.getInstance();
+    private static final UserDao userDao = UserDaoImpl.getInstance();
     private static final Lock locker = new ReentrantLock();
     private static volatile UserServiceImpl instance = UserServiceImpl.getInstance();
-
 
     public static UserServiceImpl getInstance() {
         if (instance == null) {
@@ -37,14 +36,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean register(Map<String, String> fields) throws ServiceException {
+        boolean result = false;
         try {
             Optional<User> userOptional = userFactory.create(fields);
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
-                if (dao.isEmailAvailable(user.getEmail())) {
+                if (userDao.isEmailAvailable(user.getEmail())) {
                     String password = fields.get(RequestParameter.PASSWORD);
                     String encryptedPassword = Encryptor.encrypt(password);
-                    return dao.add(user, encryptedPassword);
+                    result = userDao.add(user, encryptedPassword);
                 } else {
                     fields.put(RequestParameter.EMAIL, MessageManager.getProperty("message.emailIsTakenError"));
                 }
@@ -52,18 +52,18 @@ public class UserServiceImpl implements UserService {
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
-        return false;
+        return result;
     }
 
     @Override
     public Optional<User> login(String email, String password) throws ServiceException {
         try {
-            Optional<String> resultPasswordOptional = dao.findPasswordByEmail(email);
+            Optional<String> resultPasswordOptional = userDao.findPasswordByEmail(email);
+            Optional<User> userOptional = Optional.empty();
             if (resultPasswordOptional.isPresent() && Encryptor.check(password, resultPasswordOptional.get())) {
-                return dao.findUserByEmail(email);
-            } else {
-                return Optional.empty();
+                userOptional = userDao.findUserByEmail(email);
             }
+            return userOptional;
         } catch (DaoException e) {
             throw new ServiceException(e);
         }

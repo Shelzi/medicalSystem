@@ -7,17 +7,17 @@ import com.epam.medicalsystem.controller.command.ActionCommand;
 import com.epam.medicalsystem.controller.command.CommandResult;
 import com.epam.medicalsystem.exception.CommandException;
 import com.epam.medicalsystem.exception.ServiceException;
-import com.epam.medicalsystem.model.service.PatientCardService;
-import com.epam.medicalsystem.model.service.impl.PatientCardServiceImpl;
+import com.epam.medicalsystem.model.service.PatientService;
+import com.epam.medicalsystem.model.service.impl.PatientServiceImpl;
 import com.epam.medicalsystem.util.MessageManager;
-import com.epam.medicalsystem.validation.PatientCardValidator;
+import com.epam.medicalsystem.validation.PatientValidator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class CreatePatientCardCommand implements ActionCommand {
+public class CreatePatientCommand implements ActionCommand {
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         String firstName = request.getParameter(RequestParameter.FIRST_NAME); // TODO: 24.02.2022 Какие-то проблемы с кодировкой на стороне jsp вроде 
@@ -44,15 +44,15 @@ public class CreatePatientCardCommand implements ActionCommand {
         requestFields.put(RequestParameter.APARTMENT_NUMBER, apartmentNumber);
         requestFields.put(RequestParameter.PHONE_NUMBER, phoneNumber);
 
-        PatientCardService service = PatientCardServiceImpl.getInstance();
+        PatientService service = PatientServiceImpl.getInstance();
         try {
-            if (service.createPatientCard(requestFields)) {
+            if (service.createPatient(requestFields)) {
                 request.setAttribute(JspAttribute.SUCCESS_PATIENT_CARD_REGISTRATION,
-                        MessageManager.getProperty("message.successPatientCardRegistration"));
+                        MessageManager.getProperty("message.successPatientRegistration"));
                 return new CommandResult(PagePath.ADD_PATIENT, CommandResult.Type.FORWARD);
             } else {
-                if (PatientCardValidator.isPatientCardFormValid(requestFields)) {
-                    request.setAttribute(JspAttribute.ERROR_PATIENT_CARD_IS_EXIST, MessageManager.getProperty("message.cardIsExistError"));
+                if (PatientValidator.isPatientFormValid(requestFields)) {
+                    request.setAttribute(JspAttribute.ERROR_PATIENT_CARD_IS_EXIST, MessageManager.getProperty("message.patientIsExistError"));
                 }
                 request.setAttribute(RequestParameter.FIRST_NAME, requestFields.get(RequestParameter.FIRST_NAME));
                 request.setAttribute(RequestParameter.LAST_NAME, requestFields.get(RequestParameter.LAST_NAME));

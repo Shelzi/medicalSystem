@@ -4,8 +4,7 @@ import com.epam.medicalsystem.controller.atribute.RequestParameter;
 import com.epam.medicalsystem.model.entity.Gender;
 import com.epam.medicalsystem.model.entity.Patient;
 import com.epam.medicalsystem.model.factory.EntityFactory;
-import com.epam.medicalsystem.validation.PatientCardValidator;
-import com.epam.medicalsystem.validation.UserValidator;
+import com.epam.medicalsystem.validation.PatientValidator;
 
 import java.time.LocalDate;
 import java.util.Locale;
@@ -34,7 +33,7 @@ public class PatientFactory implements EntityFactory<Patient> {
 
     public Optional<Patient> create(Map<String, String> fields) {
         Optional<Patient> result = Optional.empty();
-        if (PatientCardValidator.isPatientCardFormValid(fields)) { // TODO: 20.02.2022 add new validation for patient
+        if (PatientValidator.isPatientFormValid(fields)) { // TODO: 20.02.2022 add new validation for patient
             String firstName = fields.get(RequestParameter.FIRST_NAME);
             String lastName = fields.get(RequestParameter.LAST_NAME);
             String middleName = fields.get(RequestParameter.MIDDLE_NAME);

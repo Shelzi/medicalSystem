@@ -2,7 +2,7 @@ package com.epam.medicalsystem.model.dao.impl;
 
 import com.epam.medicalsystem.exception.ConnectionPoolException;
 import com.epam.medicalsystem.exception.DaoException;
-import com.epam.medicalsystem.model.dao.PatientCardDao;
+import com.epam.medicalsystem.model.dao.PatientDao;
 import com.epam.medicalsystem.model.entity.*;
 import com.epam.medicalsystem.model.pool.ConnectionPool;
 
@@ -15,17 +15,17 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import static com.epam.medicalsystem.model.dao.impl.SqlQuery.SQL_INSERT_PATIENT_CARD;
 
-public class PatientCardDaoImpl implements PatientCardDao {
+public class PatientDaoImpl implements PatientDao {
     private static final Lock locker = new ReentrantLock();
     private static final ConnectionPool pool = ConnectionPool.getInstance();
-    private static PatientCardDao instance;
+    private static PatientDao instance;
     private static final Gender DEFAULT_GENDER = Gender.OTHER;
 
-    public static PatientCardDao getInstance() {
+    public static PatientDao getInstance() {
         if (instance == null) {
             locker.lock();
             if (instance == null) {
-                instance = new PatientCardDaoImpl();
+                instance = new PatientDaoImpl();
             }
             locker.unlock();
         }
@@ -33,19 +33,19 @@ public class PatientCardDaoImpl implements PatientCardDao {
     }
 
     @Override
-    public boolean add(PatientCard patientCard) throws DaoException {
+    public boolean add(Patient patient) throws DaoException {
         try (Connection connection = pool.takeConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_PATIENT_CARD)) {
-            preparedStatement.setString(1, patientCard.getPatient().getFirstName());
-            preparedStatement.setString(2, patientCard.getPatient().getLastName());
-            preparedStatement.setString(3, patientCard.getPatient().getMiddleName());
-            preparedStatement.setInt(4, patientCard.getPatient().getGender().getGenderId());
-            preparedStatement.setDate(5, Date.valueOf(patientCard.getPatient().getBirthday()));
-            preparedStatement.setInt(6, findTownIdByName(patientCard.getPatient().getAddress().getHomeTown()).orElseThrow(() -> new DaoException("Invalid city")));
-            preparedStatement.setString(7, patientCard.getPatient().getAddress().getHomeAddress());
-            preparedStatement.setString(8, patientCard.getPatient().getAddress().getHomeNumber());
-            preparedStatement.setString(9, patientCard.getPatient().getAddress().getApartmentNumber());
-            preparedStatement.setString(10, patientCard.getPatient().getAddress().getPhoneNumber());
+            preparedStatement.setString(1, patient.getFirstName());
+            preparedStatement.setString(2, patient.getLastName());
+            preparedStatement.setString(3, patient.getMiddleName());
+            preparedStatement.setInt(4, patient.getGender().getGenderId());
+            preparedStatement.setDate(5, Date.valueOf(patient.getBirthday()));
+            preparedStatement.setInt(6, findTownIdByName(patient.getAddress().getHomeTown()).orElseThrow(() -> new DaoException("Invalid city")));
+            preparedStatement.setString(7, patient.getAddress().getHomeAddress());
+            preparedStatement.setString(8, patient.getAddress().getHomeNumber());
+            preparedStatement.setString(9, patient.getAddress().getApartmentNumber());
+            preparedStatement.setString(10, patient.getAddress().getPhoneNumber());
             return (preparedStatement.executeUpdate() == 1);
         } catch (SQLException | ConnectionPoolException e) {
             throw new DaoException(e);
@@ -75,13 +75,13 @@ public class PatientCardDaoImpl implements PatientCardDao {
     }
 
     @Override
-    public boolean isPatientCardExists(PatientCard patientCard) throws DaoException {
+    public boolean isPatientExists(Patient patient) throws DaoException {
         try (Connection connection = pool.takeConnection();
              PreparedStatement statement = connection.prepareStatement(SqlQuery.SQL_CHECK_CARD_FOR_EXISTENCE)) {
-            statement.setString(1, patientCard.getPatient().getFirstName());
-            statement.setString(2, patientCard.getPatient().getLastName());
-            statement.setString(3, patientCard.getPatient().getMiddleName());
-            statement.setDate(4, Date.valueOf(patientCard.getPatient().getBirthday()));
+            statement.setString(1, patient.getFirstName());
+            statement.setString(2, patient.getLastName());
+            statement.setString(3, patient.getMiddleName());
+            statement.setDate(4, Date.valueOf(patient.getBirthday()));
             ResultSet resultSet = statement.executeQuery();
             return resultSet.next();
         } catch (SQLException | ConnectionPoolException e) {
@@ -90,21 +90,21 @@ public class PatientCardDaoImpl implements PatientCardDao {
     }
 
     @Override
-    public List<PatientCard> findAllCards() throws DaoException {
-        List<PatientCard> patientCards = new ArrayList<>();
+    public List<Patient> findAllPatients() throws DaoException {
+        List<Patient> patients = new ArrayList<>();
         try(Connection connection = pool.takeConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(SqlQuery.SQL_FIND_ALL_CARDS)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Patient patient.add(createPatientFromResultSet(resultSet));
+                patients.add(createPatientFromResultSet(resultSet));
             }   // TODO: 28.02.2022 переписать
-            return patientCards;
+            return patients;
         } catch (SQLException | ConnectionPoolException e) {
             throw new DaoException(e);
         }
     }
 
-    private PatientCard createPatientFromResultSet(ResultSet resultSet) throws SQLException {
+    private Patient createPatientFromResultSet(ResultSet resultSet) throws SQLException {
         String firstName = resultSet.getString("firstName");
         String lastName = resultSet.getString("lastName");
         String middleName = resultSet.getString("middleName");
@@ -115,7 +115,7 @@ public class PatientCardDaoImpl implements PatientCardDao {
         String homeNumber = resultSet.getString("homeNumber");
         String apartmentNumber = resultSet.getString("apartmentNumber");
         String phoneNumber = resultSet.getString("phoneNumber");
-        return (new PatientCard(new Patient(firstName, lastName, middleName, gender.orElse(DEFAULT_GENDER),
-                birthday, homeTown, homeAddress, homeNumber, apartmentNumber, phoneNumber), new HashSet<Visit>()));
+        return (new Patient(firstName, lastName, middleName, gender.orElse(DEFAULT_GENDER),
+                birthday, homeTown, homeAddress, homeNumber, apartmentNumber, phoneNumber));
     }
 }

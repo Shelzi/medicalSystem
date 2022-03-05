@@ -2,8 +2,6 @@ package com.epam.medicalsystem.validation;
 
 import com.epam.medicalsystem.controller.atribute.RequestParameter;
 import com.epam.medicalsystem.model.entity.Gender;
-import com.epam.medicalsystem.model.entity.User;
-import com.epam.medicalsystem.model.entity.UserRole;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,7 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class PatientCardValidator {
+public class PatientValidator {
     private static final Logger logger = LogManager.getLogger();
     private static final Pattern DATE_FORMAT_PATTERN = Pattern.compile("([1-2][0-9]{3})-([0][1-9]|[1][0-2])-([0][1-9]|[12][0-9]|[3][01])");
     private static final Pattern HOME_TOWN_PATTERN = Pattern.compile("^[а-яА-Яa-zA-Z',.\\s-]{1,25}");
@@ -25,7 +23,7 @@ public class PatientCardValidator {
             "(\\(\\+?\\d+\\)[-\\s]?(((\\d+-\\d+)+)|(\\d+)|((\\d+\\s\\d+)+)))");
     private static final int PHONE_NUMBER_MAX_LENGTH = 20;
 
-    public static boolean isPatientCardFormValid(Map<String, String> fields) {
+    public static boolean isPatientFormValid(Map<String, String> fields) {
         boolean result = true;
         String firstName = fields.get(RequestParameter.FIRST_NAME);
         if (!UserValidator.isNameValid(firstName)) {

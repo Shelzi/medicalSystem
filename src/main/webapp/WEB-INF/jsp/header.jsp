@@ -25,42 +25,41 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page"
-                       href="${pageContext.request.contextPath}/find_all_patient_cards.do">Cards</a>
-                </li>
-                <ctg:user-name>
-                    <c:if test="${sessionScope.role.toString().equals(registrar)}">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page"
-                           href="${pageContext.request.contextPath}/to_add_patient.do">Add card</a>
-                    </li>
-                    </c:if>
-                </ctg:user-name>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">
-                        Dropdown
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
+            <c:if test="${sessionScope.role.toString().equals(guest)}">
+                <a class="nav-link" href="${pageContext.request.contextPath}/login">Login</a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/register">Register</a>
+            </c:if>
+            <ctg:user-name>
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <c:if test="${sessionScope.role.toString().equals(doctor)}">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page"
+                               href="${pageContext.request.contextPath}/view_all_patients.do">Cards</a>
                         </li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/logout.do">Logout</a>
-                </li>
-            </ul>
-            <form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
+                    </c:if>
+                    <c:if test="${sessionScope.role.toString().equals(registrar)}">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page"
+                               href="${pageContext.request.contextPath}/to_add_patient.do">Add card</a>
+                        </li>
+                    </c:if>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            Dropdown
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </li>
+                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/logout.do">Logout</a></li>
+                </ul>
+            </ctg:user-name>
         </div>
     </div>
 </nav>

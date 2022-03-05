@@ -3,7 +3,6 @@ package com.epam.medicalsystem.model.dao.impl;
 import com.epam.medicalsystem.exception.ConnectionPoolException;
 import com.epam.medicalsystem.exception.DaoException;
 import com.epam.medicalsystem.model.dao.UserDao;
-import com.epam.medicalsystem.model.entity.PatientCard;
 import com.epam.medicalsystem.model.entity.User;
 import com.epam.medicalsystem.model.entity.UserRole;
 import com.epam.medicalsystem.model.pool.ConnectionPool;

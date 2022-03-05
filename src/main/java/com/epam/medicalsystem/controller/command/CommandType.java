@@ -18,19 +18,24 @@ public enum CommandType {
             this.command = new RegisterCommand();
         }
     },
-    FIND_ALL_PATIENT_CARDS {
+    VIEW_ALL_PATIENTS {
         {
-            this.command = new FindAllPatientCardsCommand();
+            this.command = new ViewAllPatientsCommand();
         }
     },
-    TO_ADD_PATIENT{
+    TO_ADD_PATIENT {
         {
             this.command = new ToAddPatientCommand();
         }
     },
-    CREATE_PATIENT_CARD{
+    CREATE_PATIENT {
         {
-            this.command = new CreatePatientCardCommand();
+            this.command = new CreatePatientCommand();
+        }
+    },
+    VIEW_ALL_VISITS {
+        {
+            this.command = new ViewAllPatientVisitsCommand();
         }
     };
     ActionCommand command;

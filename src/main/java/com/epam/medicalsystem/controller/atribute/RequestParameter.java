@@ -29,4 +29,11 @@ public class RequestParameter {
 
     public static final String PHONE_NUMBER = "phoneNumber";
 
+    public static final String PATIENT_ID = "patientId";
+
+    public static final String PATIENTS = "patients";
+
+    public static final String VISITS = "visits";
+
+
 }

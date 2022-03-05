@@ -28,19 +28,22 @@ public class Controller extends HttpServlet {
         ConnectionPool.getInstance().init();
     }
 
+    @Override
     public void destroy() {
         try {
             ConnectionPool.getInstance().destroy();
-        } catch (ConnectionPoolException | SQLException e) {
-            e.printStackTrace();
+        } catch (ConnectionPoolException e) {
+            logger.log(Level.ERROR, e);
         }
     }
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);

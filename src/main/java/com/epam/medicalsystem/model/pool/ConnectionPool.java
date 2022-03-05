@@ -63,7 +63,7 @@ public class ConnectionPool {
     public void init() {
     }
 
-    public void destroy() throws ConnectionPoolException, SQLException {
+    public void destroy() throws ConnectionPoolException {
         for (ProxyConnection proxyConnection: idleConnections) {
             try {
                 proxyConnection.finallyClose();
