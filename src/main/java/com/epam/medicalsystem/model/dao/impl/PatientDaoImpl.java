@@ -90,10 +90,22 @@ public class PatientDaoImpl implements PatientDao {
     }
 
     @Override
+    public Optional<Patient> findPatientById(long id) throws DaoException {
+        try (Connection connection = pool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(SqlQuery.SQL_FIND_PATIENT_BY_ID)) {
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            return (resultSet.next() ? Optional.of(createPatientFromResultSet(resultSet)) : Optional.empty());
+        } catch (SQLException | ConnectionPoolException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
     public List<Patient> findAllPatients() throws DaoException {
         List<Patient> patients = new ArrayList<>();
-        try(Connection connection = pool.takeConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(SqlQuery.SQL_FIND_ALL_CARDS)) {
+        try (Connection connection = pool.takeConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SqlQuery.SQL_FIND_ALL_CARDS)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 patients.add(createPatientFromResultSet(resultSet));
@@ -105,6 +117,7 @@ public class PatientDaoImpl implements PatientDao {
     }
 
     private Patient createPatientFromResultSet(ResultSet resultSet) throws SQLException {
+        long id = resultSet.getLong("patientId");
         String firstName = resultSet.getString("firstName");
         String lastName = resultSet.getString("lastName");
         String middleName = resultSet.getString("middleName");
@@ -115,7 +128,7 @@ public class PatientDaoImpl implements PatientDao {
         String homeNumber = resultSet.getString("homeNumber");
         String apartmentNumber = resultSet.getString("apartmentNumber");
         String phoneNumber = resultSet.getString("phoneNumber");
-        return (new Patient(firstName, lastName, middleName, gender.orElse(DEFAULT_GENDER),
+        return (new Patient(id, firstName, lastName, middleName, gender.orElse(DEFAULT_GENDER),
                 birthday, homeTown, homeAddress, homeNumber, apartmentNumber, phoneNumber));
     }
 }

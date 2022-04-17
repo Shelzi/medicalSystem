@@ -66,6 +66,7 @@ public class VisitDaoImpl implements VisitDao {
                 resultSet.getString("complaints"),
                 resultSet.getString("diagnosis"),
                 resultSet.getString("medicines"),
-                new Timestamp(resultSet.getLong("nextVisitDate")).toInstant().atZone(ZoneId.of("UTC")).toLocalDateTime());
+                new Timestamp(resultSet.getLong("nextVisitDate")).toInstant().atZone(ZoneId.of("UTC")).toLocalDateTime(),
+                new HashSet<>());
     }
 }

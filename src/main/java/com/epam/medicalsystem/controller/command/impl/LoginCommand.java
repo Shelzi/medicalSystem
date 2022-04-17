@@ -25,8 +25,8 @@ public class LoginCommand implements ActionCommand {
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
-        request.getSession().setAttribute("currentLocale", new Locale("en", "US"));
-        CommandResult commandResult = new CommandResult("/login", CommandResult.Type.FORWARD);
+        //request.getSession().setAttribute("currentLocale", new Locale("en", "US"));
+        CommandResult commandResult = new CommandResult(PagePath.LOGIN, CommandResult.Type.FORWARD);
         String login = request.getParameter(PARAM_NAME_LOGIN);
         String password = request.getParameter(PARAM_NAME_PASSWORD);
         try {
@@ -38,7 +38,7 @@ public class LoginCommand implements ActionCommand {
                     session.setAttribute(SessionAttribute.USER, user);
                     session.setAttribute(SessionAttribute.CURRENT_ROLE, user.getUserRole());
                     session.setAttribute(SessionAttribute.USER_ID, user.getId());
-                    return new CommandResult("/main", CommandResult.Type.REDIRECT);
+                    return new CommandResult(SessionAttribute.MAIN_PAGE, CommandResult.Type.REDIRECT);
                 } else {
                     request.setAttribute(JspAttribute.ERROR_INPUT_DATA_ATTRIBUTE, MessageManager.getProperty("message.bannedOrDeletedError"));
                 }

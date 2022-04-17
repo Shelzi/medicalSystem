@@ -1,6 +1,7 @@
 package com.epam.medicalsystem.model.entity;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 public class Visit {
     private long id;
@@ -12,21 +13,22 @@ public class Visit {
     private String diagnosis;
     private String medicines;
     private LocalDateTime nextVisitDate;
+    private Set<ProcedureSchedule> procedureSchedulesSet;
 
     public Visit(long id, LocalDateTime visitDate, Patient patient, User doctor, String anamnesis,
-                 String complaints, String diagnosis, String medicines, LocalDateTime nextVisitDate) {
-        this(visitDate, patient, doctor, anamnesis, complaints, diagnosis, medicines, nextVisitDate);
+                 String complaints, String diagnosis, String medicines, LocalDateTime nextVisitDate, Set<ProcedureSchedule> procedureScheduleSet) {
+        this(visitDate, patient, doctor, anamnesis, complaints, diagnosis, medicines, nextVisitDate, procedureScheduleSet);
         this.id = id;
     }
 
     public Visit(LocalDateTime visitDate, Patient patient, User doctor, String anamnesis, String complaints,
-                 String diagnosis, String medicines, LocalDateTime nextVisitDate) {
-        this(visitDate, patient, doctor, anamnesis, complaints, diagnosis, medicines);
+                 String diagnosis, String medicines, LocalDateTime nextVisitDate, Set<ProcedureSchedule> procedureScheduleSet) {
+        this(visitDate, patient, doctor, anamnesis, complaints, diagnosis, medicines, procedureScheduleSet);
         this.nextVisitDate = nextVisitDate;
     }
 
     public Visit(LocalDateTime visitDate, Patient patient, User doctor, String anamnesis, String complaints,
-                 String diagnosis, String medicines) {
+                 String diagnosis, String medicines, Set<ProcedureSchedule> procedureScheduleSet) {
         this.visitDate = visitDate;
         this.patient = patient;
         this.doctor = doctor;
@@ -34,7 +36,13 @@ public class Visit {
         this.complaints = complaints;
         this.diagnosis = diagnosis;
         this.medicines = medicines;
+        this.procedureSchedulesSet = procedureScheduleSet;
     }
+
+    public Visit(String anamnesis, String complaints, String diagnosis, String medicines, LocalDateTime nextVisitDate) {
+
+    }
+
 
     public long getId() {
         return id;
@@ -106,5 +114,29 @@ public class Visit {
 
     public void setNextVisitDate(LocalDateTime nextVisitDate) {
         this.nextVisitDate = nextVisitDate;
+    }
+
+    public Set<ProcedureSchedule> getProcedureSchedulesSet() {
+        return procedureSchedulesSet;
+    }
+
+    public void setProcedureSchedulesSet(Set<ProcedureSchedule> procedureSchedulesSet) {
+        this.procedureSchedulesSet = procedureSchedulesSet;
+    }
+
+    @Override
+    public String toString() {
+        return "Visit{" +
+                "id=" + id +
+                ", visitDate=" + visitDate +
+                ", patient=" + patient +
+                ", doctor=" + doctor +
+                ", anamnesis='" + anamnesis + '\'' +
+                ", complaints='" + complaints + '\'' +
+                ", diagnosis='" + diagnosis + '\'' +
+                ", medicines='" + medicines + '\'' +
+                ", nextVisitDate=" + nextVisitDate +
+                ", procedureSchedulesSet=" + procedureSchedulesSet +
+                '}';
     }
 }

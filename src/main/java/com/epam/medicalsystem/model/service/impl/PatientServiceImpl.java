@@ -33,7 +33,7 @@ public class PatientServiceImpl implements PatientService {
         return instance;
     }
 
-    public boolean createPatient(Map<String, String> fields) throws ServiceException {
+    public boolean create(Map<String, String> fields) throws ServiceException {
         try {
             Optional<Patient> patientOptional = PatientFactory.getInstance().create(fields);
             if (patientOptional.isPresent()) {
@@ -51,7 +51,21 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public List<Patient> findAllPatients() throws ServiceException {
+    public Patient findById(long id) throws ServiceException {
+        try {
+            return patientDao.findPatientById(id).orElseThrow(() -> new ServiceException("Patient not exist"));
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public List<Patient> findByFields(Map<String, String> fields) throws ServiceException {
+        return null;
+    }
+
+    @Override
+    public List<Patient> findAll() throws ServiceException {
         try {
             return patientDao.findAllPatients();
         } catch (DaoException e) {

@@ -33,7 +33,19 @@ public class RequestParameter {
 
     public static final String PATIENTS = "patients";
 
+    public static final String PATIENT = "patient";
+
     public static final String VISITS = "visits";
 
+    public static final String ANAMNESIS = "anamnesis";
 
+    public static final String COMPLAINTS = "complaints";
+
+    public static final String DIAGNOSIS = "diagnosis";
+
+    public static final String MEDICINES = "medicines";
+
+    public static final String PROCEDURES_CHECKBOX = "proceduresCheckbox";
+
+    public static final String NEXT_DATE_VISIT = "nextDateVisit";
 }

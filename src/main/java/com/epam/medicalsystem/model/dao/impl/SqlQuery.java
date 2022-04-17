@@ -6,6 +6,8 @@ public class SqlQuery {
 
     public static final String SQL_FIND_USER_BY_EMAIL = "SELECT * FROM users where email = ?";
 
+    public static final String SQL_FIND_USER_BY_ID = "SELECT * FROM users where userId = ?";
+
     public static final String SQL_FIND_EMAIL = "SELECT * FROM users where email = ?";
 
     public static final String SQL_FIND_PASSWORD_BY_EMAIL = "SELECT users.password FROM users where email = ?";
@@ -24,4 +26,9 @@ public class SqlQuery {
     public static final String SQL_FIND_ALL_CARDS = "SELECT * FROM patients JOIN cities ON homeTownId_fk = cityId;";
 
     public static final String SQL_FIND_VISITS_BY_PATIENT_ID = "SELECT * FROM visits JOIN patients ON patientId_fk = patientId WHERE patientId = ? ORDER BY visitDate;";
+
+    public static final String SQL_FIND_PATIENT_BY_ID = "SELECT * FROM patients JOIN cities ON homeTownId_fk = cityId WHERE patientId = ?;";
+
+    public static final String SQL_FIND_ALL_PROCEDURES = "SELECT * FROM procedures;";
+
 }

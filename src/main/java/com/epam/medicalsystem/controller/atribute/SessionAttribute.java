@@ -11,6 +11,12 @@ public class SessionAttribute {
 
     public static final String SUCCESS_MESSAGE = "successMessage";
 
+    public static final String MAIN_PAGE = "/main";
+
+    public static final String LOGIN_PAGE = "/login";
+
+    public static final String REGISTER_PAGE = "/register";
+
     private SessionAttribute() {
     }
 }

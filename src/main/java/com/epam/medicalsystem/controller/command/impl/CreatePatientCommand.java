@@ -46,13 +46,13 @@ public class CreatePatientCommand implements ActionCommand {
 
         PatientService service = PatientServiceImpl.getInstance();
         try {
-            if (service.createPatient(requestFields)) {
+            if (service.create(requestFields)) {
                 request.setAttribute(JspAttribute.SUCCESS_PATIENT_CARD_REGISTRATION,
                         MessageManager.getProperty("message.successPatientRegistration"));
                 return new CommandResult(PagePath.ADD_PATIENT, CommandResult.Type.FORWARD);
             } else {
                 if (PatientValidator.isPatientFormValid(requestFields)) {
-                    request.setAttribute(JspAttribute.ERROR_PATIENT_CARD_IS_EXIST, MessageManager.getProperty("message.patientIsExistError"));
+                    request.setAttribute(JspAttribute.ERROR_PATIENT_CARD_IS_EXIST, MessageManager.getProperty("message.patientIsExistingError"));
                 }
                 request.setAttribute(RequestParameter.FIRST_NAME, requestFields.get(RequestParameter.FIRST_NAME));
                 request.setAttribute(RequestParameter.LAST_NAME, requestFields.get(RequestParameter.LAST_NAME));

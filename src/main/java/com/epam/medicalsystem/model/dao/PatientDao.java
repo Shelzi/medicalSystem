@@ -16,4 +16,6 @@ public interface PatientDao {
     Optional<Integer> findTownIdByName(String name) throws DaoException;
 
     boolean isPatientExists(Patient patient) throws DaoException;
+
+    Optional<Patient> findPatientById(long id) throws DaoException;
 }

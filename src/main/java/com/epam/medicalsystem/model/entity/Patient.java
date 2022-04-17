@@ -15,6 +15,7 @@ public class Patient {
         this.id = id;
     }
 
+
     public Patient(String firstName, String lastName, String middleName, Gender gender,
                    LocalDate birthday, Address address) {
         this.firstName = firstName;
@@ -34,6 +35,14 @@ public class Patient {
         this.gender = gender;
         this.birthday = birthday;
         this.address = new Address(homeTown, homeAddress, homeNumber, apartmentNumber, phoneNumber);
+    }
+
+    public Patient(long id, String firstName, String lastName, String middleName, Gender gender,
+                   LocalDate birthday, String homeTown, String homeAddress, String homeNumber, String apartmentNumber,
+                   String phoneNumber) {
+        this(firstName, lastName, middleName, gender, birthday, homeTown, homeAddress, homeNumber, apartmentNumber,
+                phoneNumber);
+        this.id = id;
     }
 
     public long getId() {
@@ -161,8 +170,7 @@ public class Patient {
     }
 
     @Override
-    public String
-    toString() {
+    public String toString() {
         return "Patient{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +

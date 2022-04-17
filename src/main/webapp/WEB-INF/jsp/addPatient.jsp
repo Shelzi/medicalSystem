@@ -21,7 +21,6 @@
     <input type="text" name="lastName" value="${lastName}" required/>
     <br/>
     Middle Name:
-    <input type="text" name="middleName" value="${middleName}" required/>
     <br/>
     Gender:
     <input type="radio" id="male" name="gender" value="male" required/>

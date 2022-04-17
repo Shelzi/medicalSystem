@@ -24,7 +24,7 @@ public class CommandProvider {
                 CommandType commandType = CommandType.valueOf(stringCommand.toUpperCase());
                 return Optional.of(commandType.getCurrentCommand());
             } catch (IllegalArgumentException e) {
-                logger.log(Level.ERROR, "Command " + stringCommand + "isn't correct: " + e);
+                logger.log(Level.ERROR, "Command " + stringCommand + " isn't correct: " + e);
             }
         }
         return Optional.empty();

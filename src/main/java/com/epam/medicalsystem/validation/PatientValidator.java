@@ -46,7 +46,7 @@ public class PatientValidator {
             result = false;
         }
         String birthday = fields.get(RequestParameter.BIRTHDAY);
-        if (!isBirthdayDateValid(birthday)) {
+        if (!isDateUpcomingAndValid(birthday)) {
             fields.put(RequestParameter.BIRTHDAY, "");
             result = false;
         }
@@ -123,7 +123,7 @@ public class PatientValidator {
         return result;
     }
 
-    public static boolean isBirthdayDateValid(String date) {
+    public static boolean isDateUpcomingAndValid(String date) {
         if (date == null) {
             return false;
         }

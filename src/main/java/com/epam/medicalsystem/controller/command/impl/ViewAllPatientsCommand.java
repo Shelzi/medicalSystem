@@ -18,7 +18,7 @@ public class ViewAllPatientsCommand implements ActionCommand {
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         try {
-            List<Patient> patients = PatientServiceImpl.getInstance().findAllPatients();;
+            List<Patient> patients = PatientServiceImpl.getInstance().findAll();
             request.setAttribute(RequestParameter.PATIENTS, patients);
             return new CommandResult(PagePath.PATIENTS, CommandResult.Type.FORWARD);
         } catch (ServiceException e) {

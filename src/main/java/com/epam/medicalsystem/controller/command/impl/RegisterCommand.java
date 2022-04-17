@@ -40,10 +40,10 @@ public class RegisterCommand implements ActionCommand {
         requestFields.put(RequestParameter.USER_ROLE, userRole);
 
         UserService service = UserServiceImpl.getInstance();
-        CommandResult result = new CommandResult("/login", CommandResult.Type.REDIRECT);
+        CommandResult result = new CommandResult(SessionAttribute.MAIN_PAGE, CommandResult.Type.REDIRECT);
 
         try {
-            if (service.register(requestFields)) {
+            if (service.create(requestFields)) {
                 HttpSession session = request.getSession();
                 session.setAttribute(SessionAttribute.SUCCESS_MESSAGE, Boolean.TRUE);
             } else {

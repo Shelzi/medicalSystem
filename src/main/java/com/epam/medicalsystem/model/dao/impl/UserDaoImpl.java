@@ -62,6 +62,20 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public Optional<User> findUserById(long id) throws DaoException {
+        Optional<User> userOptional;
+        try (Connection connection = pool.takeConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_USER_BY_ID)) {
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            userOptional = (resultSet.next() ? Optional.of(createUserFromResultSet(resultSet)) : Optional.empty());
+        } catch (SQLException | ConnectionPoolException e) {
+            throw new DaoException(e);
+        }
+        return userOptional;
+    }
+
+    @Override
     public boolean isEmailAvailable(String email) throws DaoException {
         try (Connection connection = pool.takeConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_EMAIL)) {

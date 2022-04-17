@@ -37,6 +37,31 @@ public enum CommandType {
         {
             this.command = new ViewAllPatientVisitsCommand();
         }
+    },
+    TO_ADD_VISIT {
+        {
+            this.command = new ToAddVisitCommand();
+        }
+    },
+    CREATE_VISIT {
+        {
+            this.command = new CreateVisitCommand();
+        }
+    },
+    FIND_PATIENT {
+        {
+            this.command = new FindPatientCommand();
+        }
+    },
+    TO_FIND_PATIENT {
+        {
+            this.command = new ToFindPatientCommand();
+        }
+    },
+    CHANGE_LANGUAGE {
+        {
+            this.command = new ChangeLanguageCommand();
+        }
     };
     ActionCommand command;
 

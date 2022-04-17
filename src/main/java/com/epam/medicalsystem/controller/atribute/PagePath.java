@@ -17,7 +17,9 @@ public class PagePath {
 
     public static final String VISITS = "/WEB-INF/jsp/visits.jsp";
 
+    public static final String ADD_VISIT = "/WEB-INF/jsp/addVisit.jsp";
 
+    public static final String FIND_PATIENT = "/WEB-INF/jsp/findPatient.jsp";
 
     private PagePath() {
     }

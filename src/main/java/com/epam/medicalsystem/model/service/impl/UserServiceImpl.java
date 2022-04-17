@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean register(Map<String, String> fields) throws ServiceException {
+    public boolean create(Map<String, String> fields) throws ServiceException {
         boolean result = false;
         try {
             Optional<User> userOptional = userFactory.create(fields);

@@ -7,6 +7,8 @@ public class JspAttribute {
 
     public static final String SUCCESS_PATIENT_CARD_REGISTRATION = "successPatientRegistration";
 
+    public static final String ERROR_PATIENT_NOT_FOUND = "patientNotFoundError";
+
     private JspAttribute() {
     }
 }
